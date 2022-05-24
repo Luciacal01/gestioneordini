@@ -3,46 +3,58 @@ package it.prova.gestioneordini.dao.categoria;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.prova.gestioneordini.model.Categoria;
 
 public class CategoriaDAOImpl implements CategoriaDAO {
-	
+
 	private EntityManager entityManager;
-	
+
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager=entityManager;
+		this.entityManager = entityManager;
 	}
 
 	@Override
 	public List<Categoria> list() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.createQuery("from Categoria", Categoria.class).getResultList();
 	}
 
 	@Override
 	public Categoria get(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.find(Categoria.class, id);
 	}
 
 	@Override
-	public void update(Categoria o) throws Exception {
-		// TODO Auto-generated method stub
-
+	public void update(Categoria categoriaInstance) throws Exception {
+		if (categoriaInstance == null) {
+			throw new Exception("Problema valore in input");
+		}
+		categoriaInstance = entityManager.merge(categoriaInstance);
 	}
 
 	@Override
-	public void insert(Categoria o) throws Exception {
-		// TODO Auto-generated method stub
-
+	public void insert(Categoria categoriaInstance) throws Exception {
+		if (categoriaInstance == null) {
+			throw new Exception("Problema valore in input");
+		}
+		entityManager.persist(categoriaInstance);
 	}
 
 	@Override
-	public void delete(Categoria o) throws Exception {
-		// TODO Auto-generated method stub
+	public void delete(Categoria categoriaInstance) throws Exception {
+		if (categoriaInstance == null) {
+			throw new Exception("Problema valore in input");
+		}
+		entityManager.remove(entityManager.merge(categoriaInstance));
+	}
 
+	public Categoria findByIdFetchingArticoli(Long id) throws Exception {
+		TypedQuery<Categoria> query = entityManager.createQuery(
+				"select c from Categoria c left join fetch c.categorie cat where c.id = :idArticolo", Categoria.class);
+		query.setParameter("idArticolo", id);
+		return query.getResultList().stream().findFirst().orElse(null);
 	}
 
 }

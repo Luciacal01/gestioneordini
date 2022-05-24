@@ -7,7 +7,7 @@ import it.prova.gestioneordini.model.Ordine;
 
 public interface OrdineService {
 
-	public List<OrdineService> listAll() throws Exception;
+	public List<Ordine> listAll() throws Exception;
 
 	public Ordine caricaSingoloElemento(Long id) throws Exception;
 
@@ -18,6 +18,6 @@ public interface OrdineService {
 	public void inserisciNuovo(Ordine cdInstance) throws Exception;
 
 	public void rimuovi(Long idCd) throws Exception;
-	
+
 	public void setOrdineDAO(OrdineDAO ordineDAO);
 }
