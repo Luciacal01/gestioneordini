@@ -7,6 +7,7 @@ import java.util.List;
 
 import it.prova.gestioneordini.dao.EntityManagerUtil;
 import it.prova.gestioneordini.model.Articolo;
+import it.prova.gestioneordini.model.Categoria;
 import it.prova.gestioneordini.model.Ordine;
 import it.prova.gestioneordini.service.ArticoloService;
 import it.prova.gestioneordini.service.CategoriaService;
@@ -31,7 +32,11 @@ public class TestGestioneOrdini {
 			// testAggiornaOrdine(ordineServiceInstance);
 
 			// testAggiungiArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
-			testRimuoviArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
+			// testRimuoviArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
+
+			// testAggiungiCategoriaADArticolo(articoloServiceInstance,
+			// categoriaServiceInstance);
+			testAggiungiArticoloACategoria(articoloServiceInstance, categoriaServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -91,5 +96,52 @@ public class TestGestioneOrdini {
 		articoloServiceInstance.rimuovi(articoloDaRimuovere.getId());
 
 		System.out.println("........testRimuoviArticoloAdOrdine PASSED........");
+	}
+
+	public static void testAggiungiCategoriaADArticolo(ArticoloService articoloServiceInstance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println(".........testAggiungiCategoriaADArticolo inizio.........");
+
+		Articolo articoloDaCollegare = articoloServiceInstance.listAll().get(1);
+
+		Categoria categoriaDaCollegare = new Categoria("cartoleria", "CART00");
+		categoriaServiceInstance.inserisciNuovo(categoriaDaCollegare);
+		if (categoriaDaCollegare.getId() == null)
+			throw new RuntimeException("test FAILED, categoria non aggiunta");
+
+		articoloServiceInstance.aggiungiCategoria(articoloDaCollegare, categoriaDaCollegare);
+
+		Articolo articoloReload = articoloServiceInstance.caricaSingoloElemento(articoloDaCollegare.getId());
+		if (articoloReload.getCategorie() == null)
+			throw new RuntimeException("test FILED, categoria non aggiunta");
+
+		System.out.println(".........testAggiungiArticoloACategoria PASSED.........");
+	}
+
+	public static void testAggiungiArticoloACategoria(ArticoloService articoloServiceInstance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println(".........testAggiungiCategoriaADArticolo inizio.........");
+
+		List<Categoria> listaCategorie = categoriaServiceInstance.listAll();
+		if (listaCategorie.size() == 0)
+			throw new RuntimeException("test FAILED: non ci sono categorie");
+
+		List<Articolo> listaArticoli = articoloServiceInstance.listAll();
+		if (listaArticoli.size() == 0)
+			throw new RuntimeException("test FAILED: non ci sono articoli");
+
+		Categoria categoriaDaCollegare = listaCategorie.get(2);
+		Articolo articoloDaCollegare = listaArticoli.get(0);
+		categoriaServiceInstance.aggiungiArticolo(articoloDaCollegare, categoriaDaCollegare);
+
+		Categoria categoriaReload = categoriaServiceInstance.caricaSingoloElemento(categoriaDaCollegare.getId());
+		if (categoriaReload.getArticoli() == null)
+			throw new RuntimeException("test FAILED, non sono stati collegati");
+
+		Articolo articoloReload = articoloServiceInstance.caricaSingoloElemento(articoloDaCollegare.getId());
+		if (articoloReload.getCategorie() == null)
+			throw new RuntimeException("test FILED, categoria non aggiunta");
+
+		System.out.println(".........testAggiungiArticoloACategoria PASSED.........");
 	}
 }
