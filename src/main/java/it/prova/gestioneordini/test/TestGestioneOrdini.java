@@ -49,9 +49,8 @@ public class TestGestioneOrdini {
 			// articoloServiceInstance,
 			// ordineServiceInstance);
 
-			// testOrdineConDataSpedizionePiùRecente(categoriaServiceInstance,
-			// articoloServiceInstance,
-			// ordineServiceInstance);
+			testOrdineConDataSpedizionePiùRecente(categoriaServiceInstance, articoloServiceInstance,
+					ordineServiceInstance);
 
 			// testCercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio(categoriaServiceInstance,
 			// articoloServiceInstance, ordineServiceInstance);
@@ -59,8 +58,9 @@ public class TestGestioneOrdini {
 			// articoloServiceInstance,
 			// ordineServiceInstance);
 
-			testListaIndirizziCheCheHannoIndirizzoSeriale(categoriaServiceInstance, articoloServiceInstance,
-					ordineServiceInstance);
+			// testListaIndirizziCheCheHannoIndirizzoSeriale(categoriaServiceInstance,
+			// articoloServiceInstance,
+			// ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -276,7 +276,7 @@ public class TestGestioneOrdini {
 		if (categoria.getId() == null)
 			throw new RuntimeException("test FAILED, categoria non inserita");
 
-		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-03-2019");
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-05-2022");
 		Ordine ordineInstance = new Ordine("carlo forsi", "via Del Corso, 14", dataSpedizione);
 		ordineServiceInstance.inserisciNuovo(ordineInstance);
 
@@ -290,7 +290,7 @@ public class TestGestioneOrdini {
 
 		articoloServiceInstance.aggiungiCategoria(articolo1, categoria);
 
-		Date dataSpedizione1 = new SimpleDateFormat("dd-MM-yyyy").parse("23-09-2019");
+		Date dataSpedizione1 = new SimpleDateFormat("dd-MM-yyyy").parse("24-05-2022");
 		Ordine ordineInstance1 = new Ordine("carlo forsi", "via Del Corso, 14", dataSpedizione);
 		ordineServiceInstance.inserisciNuovo(ordineInstance1);
 
