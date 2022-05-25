@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import it.prova.gestioneordini.Exception.CategoriaAssociataAdArticoli;
 import it.prova.gestioneordini.dao.EntityManagerUtil;
 import it.prova.gestioneordini.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordini.model.Articolo;
@@ -119,8 +120,12 @@ public class ArticoloServiceImpl implements ArticoloService {
 
 			articoloDAO.setEntityManager(entityManager);
 
+			Articolo daRimuovere = articoloDAO.findByIdFetchingGeneri(idArticolo);
+
+			if (daRimuovere.getCategorie().size() > 0)
+				throw new CategoriaAssociataAdArticoli("Eoore: ci sono delle categorie associate");
+
 			articoloDAO.delete(articoloDAO.get(idArticolo));
-			;
 
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {

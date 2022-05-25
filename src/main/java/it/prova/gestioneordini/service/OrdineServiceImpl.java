@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import it.prova.gestioneordini.dao.EntityManagerUtil;
 import it.prova.gestioneordini.dao.ordine.OrdineDAO;
 import it.prova.gestioneordini.model.Articolo;
+import it.prova.gestioneordini.model.Categoria;
 import it.prova.gestioneordini.model.Ordine;
 
 public class OrdineServiceImpl implements OrdineService {
@@ -131,6 +132,21 @@ public class OrdineServiceImpl implements OrdineService {
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public List<Ordine> cercaPerCategoria(Categoria categoriaInstance) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			ordineDAO.setEntityManager(entityManager);
+
+			return ordineDAO.findAllByCategoria(categoriaInstance);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {

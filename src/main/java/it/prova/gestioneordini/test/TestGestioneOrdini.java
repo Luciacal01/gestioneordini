@@ -36,7 +36,12 @@ public class TestGestioneOrdini {
 
 			// testAggiungiCategoriaADArticolo(articoloServiceInstance,
 			// categoriaServiceInstance);
-			testAggiungiArticoloACategoria(articoloServiceInstance, categoriaServiceInstance);
+			// testAggiungiArticoloACategoria(articoloServiceInstance,
+			// categoriaServiceInstance);
+
+			// testCercaPerCategoria(categoriaServiceInstance, ordineServiceInstance);
+
+			testCercaCategoriaPerOrdine(categoriaServiceInstance, articoloServiceInstance, ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -74,7 +79,12 @@ public class TestGestioneOrdini {
 			OrdineService ordineServiceInstance) throws Exception {
 		System.out.println("........testAggiungiArticoloAdOrdine inizio........");
 
-		Ordine ordineDaCollegare = ordineServiceInstance.listAll().get(1);
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-02-2020");
+		Ordine ordineDaCollegare = new Ordine("Giulio Orlandi", "via Del Corso, 14", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineDaCollegare);
+
+		if (ordineDaCollegare.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
 		long nowInMillisecondi = new Date().getTime();
 		Articolo nuovoArticolo = new Articolo("Set Matite", "MATY69", 3,
 				new SimpleDateFormat("dd-MM-yyyy").parse("07-09-2018"));
@@ -92,8 +102,12 @@ public class TestGestioneOrdini {
 			OrdineService ordineServiceInstance) throws Exception {
 		System.out.println(".......testRimuoviArticoloAdOrdine inizio........");
 
-		Articolo articoloDaRimuovere = articoloServiceInstance.listAll().get(0);
-		articoloServiceInstance.rimuovi(articoloDaRimuovere.getId());
+		Articolo nuovoArticolo = new Articolo("Set Matite", "MATY69", 3,
+				new SimpleDateFormat("dd-MM-yyyy").parse("07-09-2018"));
+
+		nuovoArticolo.setOrdine(ordineServiceInstance.listAll().get(1));
+
+		articoloServiceInstance.inserisciNuovo(nuovoArticolo);
 
 		System.out.println("........testRimuoviArticoloAdOrdine PASSED........");
 	}
@@ -143,5 +157,57 @@ public class TestGestioneOrdini {
 			throw new RuntimeException("test FILED, categoria non aggiunta");
 
 		System.out.println(".........testAggiungiArticoloACategoria PASSED.........");
+	}
+
+	public static void testCercaPerCategoria(CategoriaService categoriaServiceInstance,
+			OrdineService ordineServiceInstance) throws Exception {
+		System.out.println("..........testCercaPerCategoria inizio.........");
+
+		Categoria categoria = categoriaServiceInstance.listAll().get(1);
+
+		List<Ordine> ordiniCercatiPerCategoria = ordineServiceInstance.cercaPerCategoria(categoria);
+
+		if (ordiniCercatiPerCategoria.size() != 1)
+			throw new RuntimeException("test FAILED non sono stati trovati ordini");
+
+		System.out.println("..........testCercaPerCategoria PASSED..........");
+	}
+
+	public static void testCercaCategoriaPerOrdine(CategoriaService categoriaServiceInstance,
+			ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+		System.out.println("............testCercaCategoriaPerOrdine inizio............");
+
+		Categoria categoria = new Categoria("abbigliamento", "ABIG89");
+		categoriaServiceInstance.inserisciNuovo(categoria);
+
+		if (categoria.getId() == null)
+			throw new RuntimeException("test FAILED, categoria non inserita");
+
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-02-2020");
+		Ordine ordineInstance = new Ordine("Giulio Orlandi", "via Del Corso, 14", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineInstance);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo = new Articolo("gonna a balze", "GGGG58", 9,
+				new SimpleDateFormat("dd-MM-yyyy").parse("23-03-2018"));
+		articolo.setOrdine(ordineInstance);
+		articoloServiceInstance.inserisciNuovo(articolo);
+
+		articoloServiceInstance.aggiungiCategoria(articolo, categoria);
+		
+
+		List<Categoria> listaCategoriePerOrdine = categoriaServiceInstance.cercaCategoriePerOrdini(categoria,
+				ordineInstance);
+
+		if (listaCategoriePerOrdine.size() != 1)
+			throw new RuntimeException("test FAILED");
+
+		categoriaServiceInstance.rimuovi(categoria.getId());
+		articoloServiceInstance.rimuovi(articolo.getId());
+		ordineServiceInstance.rimuovi(categoria.getId());
+
+		System.out.println("............testCercaCategoriaPerOrdine PASSED............");
 	}
 }
