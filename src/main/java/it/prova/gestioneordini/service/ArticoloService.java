@@ -27,4 +27,6 @@ public interface ArticoloService {
 			throws Exception;
 
 	public Long sommaDeiPrezziDegliArticoliLegatiAllaCategoria(Categoria categoriaInstance) throws Exception;
+	
+	public Long sommaDeiPrezziDegliArticoliOrdinatiDaMarioRossi() throws Exception;
 }

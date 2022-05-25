@@ -9,4 +9,6 @@ public interface ArticoloDAO extends IBaseDAO<Articolo> {
 	public Articolo findByIdFetchingGeneri(Long id) throws Exception;
 
 	public Long sumOfAllPriceLegatiAdUnaCategoria(Categoria categoriaInstance) throws Exception;
+	
+	public Long sumOfAllPriceSpeditiAMarioRossi() throws Exception;
 }

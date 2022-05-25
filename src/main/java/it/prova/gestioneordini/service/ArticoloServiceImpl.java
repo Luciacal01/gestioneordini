@@ -199,4 +199,20 @@ public class ArticoloServiceImpl implements ArticoloService {
 		}
 	}
 
+	@Override
+	public Long sommaDeiPrezziDegliArticoliOrdinatiDaMarioRossi() throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			articoloDAO.setEntityManager(entityManager);
+
+			return articoloDAO.sumOfAllPriceSpeditiAMarioRossi();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
 }
