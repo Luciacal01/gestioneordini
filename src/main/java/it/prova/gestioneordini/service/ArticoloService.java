@@ -25,4 +25,6 @@ public interface ArticoloService {
 
 	public void creaECollegaArticoloECategoria(Articolo articoloTransientInstance, Categoria categoriaTransientInstance)
 			throws Exception;
+
+	public Long sommaDeiPrezziDegliArticoliLegatiAllaCategoria(Categoria categoriaInstance) throws Exception;
 }

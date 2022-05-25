@@ -52,12 +52,21 @@ public class ArticoloDAOImpl implements ArticoloDAO {
 		}
 		entityManager.remove(entityManager.merge(articoloInstance));
 	}
-	
-	public Articolo findByIdFetchingGeneri(Long id) throws Exception{
+
+	public Articolo findByIdFetchingGeneri(Long id) throws Exception {
 		TypedQuery<Articolo> query = entityManager.createQuery(
 				"select a from Articoli left join fetch a.categorie c where a.id = :idArticolo", Articolo.class);
 		query.setParameter("idArticolo", id);
 		return query.getResultList().stream().findFirst().orElse(null);
+	}
+
+	@Override
+	public Long sumOfAllPriceLegatiAdUnaCategoria(Categoria categoriaInstance) throws Exception {
+		TypedQuery<Long> query = entityManager.createQuery(
+				"select SUM(a.prezzoSingolo) from Articolo a join a.categorie c where c.id= :idCat", Long.class);
+		query.setParameter("idCat", categoriaInstance.getId());
+		return query.getSingleResult();
+
 	}
 
 }

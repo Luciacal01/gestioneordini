@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import it.prova.gestioneordini.dao.EntityManagerUtil;
 import it.prova.gestioneordini.model.Articolo;
 import it.prova.gestioneordini.model.Categoria;
@@ -41,7 +43,10 @@ public class TestGestioneOrdini {
 
 			// testCercaPerCategoria(categoriaServiceInstance, ordineServiceInstance);
 
-			testCercaCategoriaPerOrdine(categoriaServiceInstance, articoloServiceInstance, ordineServiceInstance);
+			// testCercaCategoriaPerOrdine(categoriaServiceInstance,
+			// articoloServiceInstance, ordineServiceInstance);
+			testSommaDeiPrezziDegliArticoliLegatiAllaCategoria(categoriaServiceInstance, articoloServiceInstance,
+					ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -196,7 +201,6 @@ public class TestGestioneOrdini {
 		articoloServiceInstance.inserisciNuovo(articolo);
 
 		articoloServiceInstance.aggiungiCategoria(articolo, categoria);
-		
 
 		List<Categoria> listaCategoriePerOrdine = categoriaServiceInstance.cercaCategoriePerOrdini(categoria,
 				ordineInstance);
@@ -209,5 +213,43 @@ public class TestGestioneOrdini {
 		ordineServiceInstance.rimuovi(categoria.getId());
 
 		System.out.println("............testCercaCategoriaPerOrdine PASSED............");
+	}
+
+	public static void testSommaDeiPrezziDegliArticoliLegatiAllaCategoria(CategoriaService categoriaServiceInstance,
+			ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+
+		Categoria categoria = new Categoria("Elementi macchina", "MACH89");
+		categoriaServiceInstance.inserisciNuovo(categoria);
+
+		if (categoria.getId() == null)
+			throw new RuntimeException("test FAILED, categoria non inserita");
+
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-02-2019");
+		Ordine ordineInstance = new Ordine("carlo forsi", "via Del Corso, 14", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineInstance);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo1 = new Articolo("Pneumatici", "GGGG58", 220,
+				new SimpleDateFormat("dd-MM-yyyy").parse("14-08-2018"));
+		articolo1.setOrdine(ordineInstance);
+		articoloServiceInstance.inserisciNuovo(articolo1);
+
+		articoloServiceInstance.aggiungiCategoria(articolo1, categoria);
+
+		Articolo articolo2 = new Articolo("cambio", "GGGG58", 120,
+				new SimpleDateFormat("dd-MM-yyyy").parse("04-05-2018"));
+		articolo2.setOrdine(ordineInstance);
+		articoloServiceInstance.inserisciNuovo(articolo2);
+
+		articoloServiceInstance.aggiungiCategoria(articolo2, categoria);
+
+		Long prezzi = articoloServiceInstance.sommaDeiPrezziDegliArticoliLegatiAllaCategoria(categoria);
+
+		if (prezzi != 340)
+			throw new RuntimeException("test FAILED");
+
+		System.out.println("..........testSommaDeiPrezziDegliArticoliLegatiAllaCategoria PASSED..........");
 	}
 }
