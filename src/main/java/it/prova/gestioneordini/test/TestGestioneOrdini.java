@@ -55,7 +55,11 @@ public class TestGestioneOrdini {
 
 			// testCercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio(categoriaServiceInstance,
 			// articoloServiceInstance, ordineServiceInstance);
-			testSommaDeiPrezziDegliArticoliOrdinatiDaMarioRossi(categoriaServiceInstance, articoloServiceInstance,
+			// testSommaDeiPrezziDegliArticoliOrdinatiDaMarioRossi(categoriaServiceInstance,
+			// articoloServiceInstance,
+			// ordineServiceInstance);
+
+			testListaIndirizziCheCheHannoIndirizzoSeriale(categoriaServiceInstance, articoloServiceInstance,
 					ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -389,5 +393,45 @@ public class TestGestioneOrdini {
 		Long sommaArticoliMArioRossi = articoloServiceInstance.sommaDeiPrezziDegliArticoliOrdinatiDaMarioRossi();
 		System.out.println(sommaArticoliMArioRossi);
 
+	}
+
+	public static void testListaIndirizziCheCheHannoIndirizzoSeriale(CategoriaService categoriaServiceInstance,
+			ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+		Categoria categoria = new Categoria("Calzature", "CALZ");
+		categoriaServiceInstance.inserisciNuovo(categoria);
+
+		if (categoria.getId() == null)
+			throw new RuntimeException("test FAILED, categoria non inserita");
+
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-02-2022");
+		Ordine ordineInstance = new Ordine("MArio Rossi", "via gianni, 88", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineInstance);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo1 = new Articolo("NIKE DUNK", "DUNK44", 90,
+				new SimpleDateFormat("dd-MM-yyyy").parse("14-08-2019"));
+		articolo1.setOrdine(ordineInstance);
+		articoloServiceInstance.inserisciNuovo(articolo1);
+
+		articoloServiceInstance.aggiungiCategoria(articolo1, categoria);
+
+		Date dataSpedizione1 = new SimpleDateFormat("dd-MM-yyyy").parse("21-02-2022");
+		Ordine ordineInstance1 = new Ordine("Mario Rossi", "via corsi, 90", dataSpedizione1);
+		ordineServiceInstance.inserisciNuovo(ordineInstance1);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo2 = new Articolo("adidas supers", "NUKS49", 188,
+				new SimpleDateFormat("dd-MM-yyyy").parse("14-10-2021"));
+		articolo2.setOrdine(ordineInstance1);
+		articoloServiceInstance.inserisciNuovo(articolo2);
+
+		List<String> listaIndirizzi = ordineServiceInstance.listaIndirizziCheCheHannoIndirizzoSeriale("k");
+		for (String indirizzoItem : listaIndirizzi) {
+			System.out.println(indirizzoItem);
+		}
 	}
 }

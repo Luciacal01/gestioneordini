@@ -25,6 +25,8 @@ public interface OrdineService {
 
 	public Ordine ordineConDataSpedizionePiùRecente(Categoria categoriaInstance) throws Exception;
 
+	public List<String> listaIndirizziCheCheHannoIndirizzoSeriale(String stringaInput) throws Exception;
+
 	public void setOrdineDAO(OrdineDAO ordineDAO);
 
 }

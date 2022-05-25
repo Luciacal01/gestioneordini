@@ -94,4 +94,13 @@ public class OrdineDAOImpl implements OrdineDAO {
 		return risultato;
 	}
 
+	@Override
+	public List<String> findAllIndirizziByStringaCheContiene(String stringaInput) throws Exception {
+		TypedQuery<String> query = entityManager.createQuery(
+				"select distinct o.indirizzoDestinatario from Ordine o join o.articoli a where a.numeroSeriale like :stringa ",
+				String.class);
+		query.setParameter("stringa", "%" + stringaInput + "%");
+		return query.getResultList();
+	}
+
 }
