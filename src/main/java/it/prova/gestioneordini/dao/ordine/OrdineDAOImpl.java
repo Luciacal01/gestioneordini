@@ -88,8 +88,8 @@ public class OrdineDAOImpl implements OrdineDAO {
 		for (Ordine ordineItem : result) {
 			if (ordineItem.getDataSpedizione().after(confronto)) {
 				confronto = ordineItem.getDataSpedizione();
+				risultato = ordineItem;
 			}
-			risultato = ordineItem;
 		}
 		return risultato;
 	}

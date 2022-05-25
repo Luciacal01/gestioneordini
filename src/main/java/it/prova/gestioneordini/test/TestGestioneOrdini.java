@@ -49,8 +49,12 @@ public class TestGestioneOrdini {
 			// articoloServiceInstance,
 			// ordineServiceInstance);
 
-			testOrdineConDataSpedizionePiùRecente(categoriaServiceInstance, articoloServiceInstance,
-					ordineServiceInstance);
+			// testOrdineConDataSpedizionePiùRecente(categoriaServiceInstance,
+			// articoloServiceInstance,
+			// ordineServiceInstance);
+
+			testCercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio(categoriaServiceInstance,
+					articoloServiceInstance, ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -299,5 +303,50 @@ public class TestGestioneOrdini {
 		System.out.println(ordineConDataSpedPiùRecente.getDataSpedizione());
 
 		System.out.println("...........testOrdineConDataSpedizionePiùRecente PASSED.....");
+	}
+
+	public static void testCercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio(
+			CategoriaService categoriaServiceInstance, ArticoloService articoloServiceInstance,
+			OrdineService ordineServiceInstance) throws Exception {
+		Categoria categoria = new Categoria("Computer", "COMP03");
+		categoriaServiceInstance.inserisciNuovo(categoria);
+
+		if (categoria.getId() == null)
+			throw new RuntimeException("test FAILED, categoria non inserita");
+
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-02-2022");
+		Ordine ordineInstance = new Ordine("claudio tiiis", "via bosio, 34", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineInstance);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo1 = new Articolo("Hp_serv", "HPSER90", 890,
+				new SimpleDateFormat("dd-MM-yyyy").parse("14-08-2019"));
+		articolo1.setOrdine(ordineInstance);
+		articoloServiceInstance.inserisciNuovo(articolo1);
+
+		articoloServiceInstance.aggiungiCategoria(articolo1, categoria);
+
+		Date dataSpedizione1 = new SimpleDateFormat("dd-MM-yyyy").parse("21-02-2022");
+		Ordine ordineInstance1 = new Ordine("Gioia vita", "via corsi, 90", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineInstance1);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo2 = new Articolo("ASUS_CAP", "ASUS90", 1110,
+				new SimpleDateFormat("dd-MM-yyyy").parse("14-10-2021"));
+		articolo2.setOrdine(ordineInstance1);
+		articoloServiceInstance.inserisciNuovo(articolo2);
+
+		articoloServiceInstance.aggiungiCategoria(articolo2, categoria);
+
+		List<String> listaCategorie = categoriaServiceInstance
+				.cercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio();
+
+		for (String categoriaItem : listaCategorie) {
+			System.out.println(categoriaItem);
+		}
 	}
 }

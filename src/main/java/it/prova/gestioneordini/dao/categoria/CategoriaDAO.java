@@ -10,6 +10,7 @@ public interface CategoriaDAO extends IBaseDAO<Categoria> {
 	public Categoria findByIdFetchingArticoli(Long id) throws Exception;
 
 	public List<Categoria> findAllByOrdine(Ordine ordineInput) throws Exception;
-	
-	
+
+	public List<String> findAllCodiciByOrdiniEffettutatiAFebraio() throws Exception;
+
 }

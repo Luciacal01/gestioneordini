@@ -24,5 +24,7 @@ public interface CategoriaService {
 
 	public void aggiungiArticolo(Articolo articoloInstance, Categoria categoriaIntsance) throws Exception;
 
+	public List<String> cercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio() throws Exception;
+
 	public List<Categoria> cercaCategoriePerOrdini(Categoria categoriaInstance, Ordine ordineInstance) throws Exception;
 }
