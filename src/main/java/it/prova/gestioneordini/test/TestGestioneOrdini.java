@@ -30,7 +30,8 @@ public class TestGestioneOrdini {
 
 			// testAggiornaOrdine(ordineServiceInstance);
 
-			testAggiungiArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
+			// testAggiungiArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
+			testRimuoviArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -81,13 +82,14 @@ public class TestGestioneOrdini {
 
 		System.out.println("........testAggiungiArticoloAdOrdine inizio........");
 	}
-	
-	public static void testRimuoviArticoloAdOrdine(ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+
+	public static void testRimuoviArticoloAdOrdine(ArticoloService articoloServiceInstance,
+			OrdineService ordineServiceInstance) throws Exception {
 		System.out.println(".......testRimuoviArticoloAdOrdine inizio........");
-		
-		Ordine ordineDaCuiRimuovere= ordineServiceInstance.listAll().get(1);
-		if(ordineDaCuiRimuovere.getArticoli().size()==0) throw new RuntimeException("test FAILED non ci sono articoli in questo ordine");
-		
+
+		Articolo articoloDaRimuovere = articoloServiceInstance.listAll().get(0);
+		articoloServiceInstance.rimuovi(articoloDaRimuovere.getId());
+
 		System.out.println("........testRimuoviArticoloAdOrdine PASSED........");
 	}
 }

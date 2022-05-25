@@ -21,9 +21,6 @@ public interface OrdineService {
 
 	public void rimuovi(Long idCd) throws Exception;
 
-	public void rimuoviArticolo(Ordine ordineInstance, Articolo articoloInstance) throws Exception;
-
 	public void setOrdineDAO(OrdineDAO ordineDAO);
 
-	public void aggiungiArticolo(Ordine ordineInstance, Articolo articoloInstance) throws Exception;
 }
