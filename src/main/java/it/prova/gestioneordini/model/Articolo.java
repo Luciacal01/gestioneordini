@@ -49,6 +49,9 @@ public class Articolo {
 	@JoinTable(name = "articolo_Categoria", joinColumns = @JoinColumn(name = "articolo_id", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "categoria_id", referencedColumnName = "ID"))
 	private Set<Categoria> categorie = new HashSet<>();
 
+	public Articolo() {
+	}
+
 	public Articolo(String descrizione, String numeroSeriale, int prezzoSingolo, Date dataInserimento) {
 		super();
 		this.descrizione = descrizione;

@@ -25,7 +25,7 @@ public class MyDaoFactory {
 		return articoloDAOInstance;
 	}
 
-	public static CategoriaDAO categoriaDAOInstance() {
+	public static CategoriaDAO getCategoriaDAOInstance() {
 		if (categoriaDAOInstance == null)
 			categoriaDAOInstance = new CategoriaDAOImpl();
 		return categoriaDAOInstance;

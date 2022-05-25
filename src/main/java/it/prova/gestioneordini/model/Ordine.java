@@ -26,7 +26,7 @@ public class Ordine {
 	private String indirizzoDestinatario;
 	@Column(name = "dataSpedizione")
 	private Date dataSpedizione;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "municipio")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "ordine")
 	private Set<Articolo> articoli = new HashSet<>();
 
 	public Ordine() {
