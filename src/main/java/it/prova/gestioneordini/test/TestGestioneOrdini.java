@@ -45,7 +45,11 @@ public class TestGestioneOrdini {
 
 			// testCercaCategoriaPerOrdine(categoriaServiceInstance,
 			// articoloServiceInstance, ordineServiceInstance);
-			testSommaDeiPrezziDegliArticoliLegatiAllaCategoria(categoriaServiceInstance, articoloServiceInstance,
+			// testSommaDeiPrezziDegliArticoliLegatiAllaCategoria(categoriaServiceInstance,
+			// articoloServiceInstance,
+			// ordineServiceInstance);
+
+			testOrdineConDataSpedizionePiùRecente(categoriaServiceInstance, articoloServiceInstance,
 					ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -251,5 +255,49 @@ public class TestGestioneOrdini {
 			throw new RuntimeException("test FAILED");
 
 		System.out.println("..........testSommaDeiPrezziDegliArticoliLegatiAllaCategoria PASSED..........");
+	}
+
+	public static void testOrdineConDataSpedizionePiùRecente(CategoriaService categoriaServiceInstance,
+			ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+
+		Categoria categoria = new Categoria("Macchinetta Del caffe", "CAFF02");
+		categoriaServiceInstance.inserisciNuovo(categoria);
+
+		if (categoria.getId() == null)
+			throw new RuntimeException("test FAILED, categoria non inserita");
+
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("23-03-2019");
+		Ordine ordineInstance = new Ordine("carlo forsi", "via Del Corso, 14", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineInstance);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo1 = new Articolo("capsule", "CAPS90", 220,
+				new SimpleDateFormat("dd-MM-yyyy").parse("14-08-2018"));
+		articolo1.setOrdine(ordineInstance);
+		articoloServiceInstance.inserisciNuovo(articolo1);
+
+		articoloServiceInstance.aggiungiCategoria(articolo1, categoria);
+
+		Date dataSpedizione1 = new SimpleDateFormat("dd-MM-yyyy").parse("23-09-2019");
+		Ordine ordineInstance1 = new Ordine("carlo forsi", "via Del Corso, 14", dataSpedizione);
+		ordineServiceInstance.inserisciNuovo(ordineInstance1);
+
+		if (ordineInstance.getId() == null)
+			throw new RuntimeException("Test FAILED, ordine non inserito");
+
+		Articolo articolo2 = new Articolo("capsule", "CAPS90", 220,
+				new SimpleDateFormat("dd-MM-yyyy").parse("14-10-2018"));
+		articolo2.setOrdine(ordineInstance1);
+		articoloServiceInstance.inserisciNuovo(articolo2);
+
+		articoloServiceInstance.aggiungiCategoria(articolo2, categoria);
+
+		Ordine ordineConDataSpedPiùRecente = ordineServiceInstance.ordineConDataSpedizionePiùRecente(categoria);
+
+		System.out.println(ordineConDataSpedPiùRecente.getDataSpedizione());
+
+		System.out.println("...........testOrdineConDataSpedizionePiùRecente PASSED.....");
 	}
 }

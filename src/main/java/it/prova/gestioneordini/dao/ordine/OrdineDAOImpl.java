@@ -1,9 +1,12 @@
 package it.prova.gestioneordini.dao.ordine;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.xml.crypto.Data;
 
 import it.prova.gestioneordini.model.Categoria;
 import it.prova.gestioneordini.model.Ordine;
@@ -69,6 +72,26 @@ public class OrdineDAOImpl implements OrdineDAO {
 				"select o from Ordine o join o.articoli a join a.categorie c where c.id= :idCategoria ", Ordine.class);
 		query.setParameter("idCategoria", categoriaInstance.getId());
 		return query.getResultList();
+	}
+
+	@Override
+	public Ordine ordinePiùRecenteInTerminiDiDataSpedizione(Categoria categoriaInstance) throws Exception {
+		TypedQuery<Ordine> query = entityManager.createQuery(
+				"select o from Ordine o join o.articoli a join a.categorie c where c.id=:idC", Ordine.class);
+		query.setParameter("idC", categoriaInstance.getId());
+
+		List<Ordine> result = query.getResultList();
+
+		Date confronto = new SimpleDateFormat("dd-MM-yyyy").parse("22-01-2020");
+
+		Ordine risultato = null;
+		for (Ordine ordineItem : result) {
+			if (ordineItem.getDataSpedizione().after(confronto)) {
+				confronto = ordineItem.getDataSpedizione();
+			}
+			risultato = ordineItem;
+		}
+		return risultato;
 	}
 
 }

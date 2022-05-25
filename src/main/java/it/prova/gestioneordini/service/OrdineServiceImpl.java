@@ -154,4 +154,19 @@ public class OrdineServiceImpl implements OrdineService {
 		}
 	}
 
+	@Override
+	public Ordine ordineConDataSpedizionePiùRecente(Categoria categoriaInstance) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			ordineDAO.setEntityManager(entityManager);
+
+			return ordineDAO.ordinePiùRecenteInTerminiDiDataSpedizione(categoriaInstance);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
 }
