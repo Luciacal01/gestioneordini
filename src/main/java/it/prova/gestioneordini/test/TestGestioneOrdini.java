@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import it.prova.gestioneordini.dao.EntityManagerUtil;
+import it.prova.gestioneordini.model.Articolo;
 import it.prova.gestioneordini.model.Ordine;
 import it.prova.gestioneordini.service.ArticoloService;
 import it.prova.gestioneordini.service.CategoriaService;
@@ -20,14 +21,16 @@ public class TestGestioneOrdini {
 		CategoriaService categoriaServiceInstance = MyServiceFactory.getCategoriaServiceInstance();
 
 		try {
-			testInserisciNuovoOrdine(ordineServiceInstance);
+			// testInserisciNuovoOrdine(ordineServiceInstance);
 			System.out.println("nella tabella ordini ci sono: " + ordineServiceInstance.listAll().size() + " elementi");
 			System.out.println(
 					"nella tabella articoli ci sono: " + articoloServiceInstance.listAll().size() + " elementi");
 			System.out.println(
 					"nella tabella categorie ci sono: " + categoriaServiceInstance.listAll().size() + " elementi");
 
-			testAggiornaOrdine(ordineServiceInstance);
+			// testAggiornaOrdine(ordineServiceInstance);
+
+			testAggiungiArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -59,5 +62,32 @@ public class TestGestioneOrdini {
 		ordineServiceInstance.aggiorna(ordineDaModificare);
 
 		System.out.println("........testAggiornaOrdine PASSED.......");
+	}
+
+	public static void testAggiungiArticoloAdOrdine(ArticoloService articoloServiceInstance,
+			OrdineService ordineServiceInstance) throws Exception {
+		System.out.println("........testAggiungiArticoloAdOrdine inizio........");
+
+		Ordine ordineDaCollegare = ordineServiceInstance.listAll().get(1);
+		long nowInMillisecondi = new Date().getTime();
+		Articolo nuovoArticolo = new Articolo("Set Matite", "MATY69", 3,
+				new SimpleDateFormat("dd-MM-yyyy").parse("07-09-2018"));
+
+		nuovoArticolo.setOrdine(ordineDaCollegare);
+		articoloServiceInstance.inserisciNuovo(nuovoArticolo);
+
+		if (nuovoArticolo.getId() == null)
+			throw new RuntimeException("testAggiungiArticoloAdOrdine FAILED, articolo non aggiunto");
+
+		System.out.println("........testAggiungiArticoloAdOrdine inizio........");
+	}
+	
+	public static void testRimuoviArticoloAdOrdine(ArticoloService articoloServiceInstance, OrdineService ordineServiceInstance) throws Exception {
+		System.out.println(".......testRimuoviArticoloAdOrdine inizio........");
+		
+		Ordine ordineDaCuiRimuovere= ordineServiceInstance.listAll().get(1);
+		if(ordineDaCuiRimuovere.getArticoli().size()==0) throw new RuntimeException("test FAILED non ci sono articoli in questo ordine");
+		
+		System.out.println("........testRimuoviArticoloAdOrdine PASSED........");
 	}
 }

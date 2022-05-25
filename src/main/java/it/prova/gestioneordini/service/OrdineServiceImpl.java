@@ -158,6 +158,11 @@ public class OrdineServiceImpl implements OrdineService {
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
+
+	}
+
+	public void rimuoviArticolo(Ordine ordineInstance, Articolo articoloInstance) throws Exception {
+		
 	}
 
 }
