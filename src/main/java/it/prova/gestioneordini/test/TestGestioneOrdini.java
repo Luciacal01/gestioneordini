@@ -3,6 +3,7 @@ package it.prova.gestioneordini.test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import it.prova.gestioneordini.dao.EntityManagerUtil;
 import it.prova.gestioneordini.model.Ordine;
@@ -25,6 +26,8 @@ public class TestGestioneOrdini {
 					"nella tabella articoli ci sono: " + articoloServiceInstance.listAll().size() + " elementi");
 			System.out.println(
 					"nella tabella categorie ci sono: " + categoriaServiceInstance.listAll().size() + " elementi");
+
+			testAggiornaOrdine(ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {
@@ -46,4 +49,15 @@ public class TestGestioneOrdini {
 		System.out.println(".........testInserisciNuovoOrdine inizio.........");
 	}
 
+	public static void testAggiornaOrdine(OrdineService ordineServiceInstance) throws Exception {
+		System.out.println("........testAggiornaOrdine inizio.......");
+
+		Date dataSpedizione = new SimpleDateFormat("dd-MM-yyyy").parse("10-12-2019");
+		Ordine ordineDaModificare = new Ordine("Francesca Ruggeri", "Piazza Bologna, 112", dataSpedizione);
+		ordineDaModificare.setId(2L);
+
+		ordineServiceInstance.aggiorna(ordineDaModificare);
+
+		System.out.println("........testAggiornaOrdine PASSED.......");
+	}
 }
