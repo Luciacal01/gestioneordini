@@ -24,43 +24,37 @@ public class TestGestioneOrdini {
 		CategoriaService categoriaServiceInstance = MyServiceFactory.getCategoriaServiceInstance();
 
 		try {
-			// testInserisciNuovoOrdine(ordineServiceInstance);
+			testInserisciNuovoOrdine(ordineServiceInstance);
 			System.out.println("nella tabella ordini ci sono: " + ordineServiceInstance.listAll().size() + " elementi");
 			System.out.println(
 					"nella tabella articoli ci sono: " + articoloServiceInstance.listAll().size() + " elementi");
 			System.out.println(
 					"nella tabella categorie ci sono: " + categoriaServiceInstance.listAll().size() + " elementi");
 
-			// testAggiornaOrdine(ordineServiceInstance);
+			testAggiornaOrdine(ordineServiceInstance);
 
-			// testAggiungiArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
-			// testRimuoviArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
+			testAggiungiArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
+			testRimuoviArticoloAdOrdine(articoloServiceInstance, ordineServiceInstance);
 
-			// testAggiungiCategoriaADArticolo(articoloServiceInstance,
-			// categoriaServiceInstance);
-			// testAggiungiArticoloACategoria(articoloServiceInstance,
-			// categoriaServiceInstance);
+			testAggiungiCategoriaADArticolo(articoloServiceInstance, categoriaServiceInstance);
+			testAggiungiArticoloACategoria(articoloServiceInstance, categoriaServiceInstance);
 
-			// testCercaPerCategoria(categoriaServiceInstance, ordineServiceInstance);
+			testCercaPerCategoria(categoriaServiceInstance, ordineServiceInstance);
 
-			// testCercaCategoriaPerOrdine(categoriaServiceInstance,
-			// articoloServiceInstance, ordineServiceInstance);
-			// testSommaDeiPrezziDegliArticoliLegatiAllaCategoria(categoriaServiceInstance,
-			// articoloServiceInstance,
-			// ordineServiceInstance);
+			testCercaCategoriaPerOrdine(categoriaServiceInstance, articoloServiceInstance, ordineServiceInstance);
+			testSommaDeiPrezziDegliArticoliLegatiAllaCategoria(categoriaServiceInstance, articoloServiceInstance,
+					ordineServiceInstance);
 
 			testOrdineConDataSpedizionePiùRecente(categoriaServiceInstance, articoloServiceInstance,
 					ordineServiceInstance);
 
-			// testCercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio(categoriaServiceInstance,
-			// articoloServiceInstance, ordineServiceInstance);
-			// testSommaDeiPrezziDegliArticoliOrdinatiDaMarioRossi(categoriaServiceInstance,
-			// articoloServiceInstance,
-			// ordineServiceInstance);
+			testCercaCodiciDelleCategorieCheHannoOrdiniEffettutatiAFebraio(categoriaServiceInstance,
+					articoloServiceInstance, ordineServiceInstance);
+			testSommaDeiPrezziDegliArticoliOrdinatiDaMarioRossi(categoriaServiceInstance, articoloServiceInstance,
+					ordineServiceInstance);
 
-			// testListaIndirizziCheCheHannoIndirizzoSeriale(categoriaServiceInstance,
-			// articoloServiceInstance,
-			// ordineServiceInstance);
+			testListaIndirizziCheCheHannoIndirizzoSeriale(categoriaServiceInstance, articoloServiceInstance,
+					ordineServiceInstance);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		} finally {

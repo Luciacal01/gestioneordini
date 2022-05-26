@@ -1,4 +1,4 @@
-package it.prova.gestioneordini.Exception;
+package it.prova.gestioneordini.exception;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import it.prova.gestioneordini.Exception.CategoriaAssociataAdArticoli;
+import it.prova.gestioneordini.exception.*;
 import it.prova.gestioneordini.dao.EntityManagerUtil;
 import it.prova.gestioneordini.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordini.model.Articolo;
